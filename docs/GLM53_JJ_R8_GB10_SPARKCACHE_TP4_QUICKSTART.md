@@ -246,7 +246,11 @@ can inspect the container or host process.
 read-only and passes it as `--chat-template`, replacing the template shipped
 inside the target checkpoint directory. Use it to adopt a template-only
 checkpoint update without re-staging weights; leave it empty to serve the
-checkpoint's own `chat_template.jinja`.
+checkpoint's own `chat_template.jinja`. After any template change, run
+`scripts/glm53_tool_turn_probe.py --api http://<rank-0>:8015 --model <served name>`
+(bearer key from `DSPARK_API_KEY`): it exercises the tool-call and tool-result
+paths the template renders (results reversed, in order, and a null assistant
+content) and exits non-zero on the first failing case.
 
 Choose the DCP degree with one line. DCP4 uses the environment template as
 written:
